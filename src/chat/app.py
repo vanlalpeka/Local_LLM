@@ -82,7 +82,8 @@ def main():
                 SystemMessage(content=summarizer_instructions),
                 HumanMessage(content=user_input)
                 ])   
-            # print(assistant_reply)
+            
+            print(assistant_reply.content)
             
             # Display assistant response
             with st.chat_message("assistant"):

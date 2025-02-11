@@ -17,7 +17,7 @@ docker exec -it <container_hash> /bin/bash      # interactive cmd line root acce
 # types of mounts: volume (persistent, newer, more features), bind-mounts (persistent, older, fewer features), tempfs mounts (non-persistent)
 docker run -v mydata:/path/in/container                 # persistent. Mount a volume
 
-docker build -t <image_tag> <path to Dockerfile>      # build the container
+docker build -t <image_tag> <path to Dockerfile>      # create image from the Dockerfile. e.g. docker build -t local_llm:latest .
 
 sudo docker run -p <computer_port>:<container_port> <image_name>       # port mapping. Frontend is accessible on <computer_port>
 docker run -p 8501:8501 local_llm_streamlit
@@ -36,3 +36,12 @@ sudo fuser -k <port_number>/tcp
 sudo systemctl restart docker                               # restart docker daemon
 sudo systemctl stop docker docker.socket containerd         # STOP docker engine
 sudo systemctl disable docker docker.socket containerd      # DISABLE docker engine
+
+
+#####################################################################################
+# SHARE VIA DOCKER HUB
+#####################################################################################
+docker login
+docker tag <local_image_name> <dockerhub_username>/<repository_name>:<tag>
+docker push <dockerhub_username>/<repository_name>:<tag>
+docker pull <dockerhub_username>/<repository_name>:<tag>

@@ -9,7 +9,7 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 
 # Add Ollama to PATH
 # ENV PATH="/root/.local/bin:$PATH"
-RUN ollama serve & ollama pull deepseek-r1:1.5b
+RUN ollama serve && ollama pull deepseek-r1:1.5b
 
 # Set the working directory in the container
 WORKDIR /app

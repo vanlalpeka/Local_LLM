@@ -1,7 +1,7 @@
 [project]
-name = "local-LLM"
+name = "local_LLM"
 version = "0.0.1"
-description = "Local lightweight LLM."
+description = "Local Lightweight LLM."
 authors = [
     { name = "Vanlal Peka" }
 ]
