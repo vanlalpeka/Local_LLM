@@ -1,26 +1,24 @@
 docker image ls         # list of images
 docker ps               # list of containers that are currently running
 docker ps -a            # list of all containers, including stopped ones
-sudo docker run nginx   # download nginx, run the container
 
-sudo docker run -d nginx                    # run in the background
-docker logs <container_name_or_ID>          # view logs
-docker stop <container_name_or_ID>          # stop container
-docker container prune                      # removes all stopped containers
-docker system prune -a --volumes            # WARNING: removes containers, images, volumes
+docker logs <container_name_or_ID>              # view logs
+docker stop <container_name_or_ID>              # stop container
 
-docker pull python:3.12-slim                # small, Debian linux, glibc, bash, apt, systemd, 
-docker pull python:3.12-alpine              # smaller, Alpine linux, musl libc, ash, apk, openrc
+docker pull python:3.12-slim                    # small, Debian linux, glibc, bash, apt, systemd, 
+docker pull python:3.12-alpine                  # smaller, Alpine linux, musl libc, ash, apk, openrc
 
 docker exec -it <container_hash> /bin/bash      # interactive cmd line root access
 
 # types of mounts: volume (persistent, newer, more features), bind-mounts (persistent, older, fewer features), tempfs mounts (non-persistent)
-docker run -v mydata:/path/in/container                 # persistent. Mount a volume
-
-docker build -t <image_tag> <path to Dockerfile>      # create image from the Dockerfile. e.g. docker build -t local_llm:latest .
-
-sudo docker run -p <computer_port>:<container_port> <image_name>       # port mapping. Frontend is accessible on <computer_port>
+docker run -v mydata:/path/in/container                                     # persistent. Mount a volume
+docker run -p <computer_port>:<container_port> <image_name>                 # port mapping. Frontend is accessible on <computer_port>
 docker run -p 8501:8501 local_llm_streamlit
+docker run -d nginx                                                         # run in the background
+docker run -p 8501:8501 -p 11434:11434 --volume /host/models:/root/.ollama  local_llm
+
+# DOCKER_BUILDKIT=1 reduced build time. It is the default builder for Docker Engine as of version 23.0
+time DOCKER_BUILDKIT=1 docker build -t <image_tag> <path to Dockerfile>      # create image from the Dockerfile. e.g. docker build -t local_llm:latest .
 
 docker compose up -d
 docker compose down -d
@@ -37,6 +35,10 @@ sudo systemctl restart docker                               # restart docker dae
 sudo systemctl stop docker docker.socket containerd         # STOP docker engine
 sudo systemctl disable docker docker.socket containerd      # DISABLE docker engine
 
+docker container prune                                      # removes all stopped containers
+docker image prune                                          # removes dangling images
+docker image prune -a --filter "until=24h"
+docker system prune -a --volumes                            # WARNING: removes containers, images, volumes
 
 #####################################################################################
 # SHARE VIA DOCKER HUB
@@ -45,3 +47,5 @@ docker login
 docker tag <local_image_name> <dockerhub_username>/<repository_name>:<tag>
 docker push <dockerhub_username>/<repository_name>:<tag>
 docker pull <dockerhub_username>/<repository_name>:<tag>
+
+export GIN_MODE=release

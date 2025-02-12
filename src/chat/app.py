@@ -6,11 +6,29 @@
 import streamlit as st
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
-import time
+# import time
+# import logging
+# import os
 
 from state import SummaryState, SummaryStateInput, SummaryStateOutput
 from prompts import query_writer_instructions, summarizer_instructions, reflection_instructions
 
+
+# file_path = 'chat.log'
+
+# # Check if log file exists
+# if os.path.exists(file_path):
+#     # Delete the file
+#     os.remove(file_path)
+#     print(f"File '{file_path}' has been deleted.")
+# else:
+#     # Create a new file
+#     open(file_path, 'w').close()
+#     print(f"File '{file_path}' has been created.")
+
+
+# logger = logging.getLogger(__name__)
+# logging.basicConfig(filename=file_path, encoding='utf-8', level=logging.INFO)
 
 def main():
     # st.title("Local App with LLM")
@@ -84,6 +102,8 @@ def main():
                 ])   
             
             print(assistant_reply.content)
+            # logger.info(assistant_reply.content)
+
             
             # Display assistant response
             with st.chat_message("assistant"):
