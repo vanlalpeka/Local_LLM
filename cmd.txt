@@ -1,3 +1,7 @@
+#####################################################################################
+# MGMT OF CONTAINERS & IMAGES
+#####################################################################################
+
 docker image ls         # list of images
 docker ps               # list of containers that are currently running
 docker ps -a            # list of all containers, including stopped ones
@@ -5,10 +9,12 @@ docker ps -a            # list of all containers, including stopped ones
 docker logs <container_name_or_ID>              # view logs
 docker stop <container_name_or_ID>              # stop container
 
+docker exec -it <container_hash> /bin/bash      # interactive cmd line root access
+
+
 docker pull python:3.12-slim                    # small, Debian linux, glibc, bash, apt, systemd, 
 docker pull python:3.12-alpine                  # smaller, Alpine linux, musl libc, ash, apk, openrc
 
-docker exec -it <container_hash> /bin/bash      # interactive cmd line root access
 
 # types of mounts: volume (persistent, newer, more features), bind-mounts (persistent, older, fewer features), tempfs mounts (non-persistent)
 docker run -v mydata:/path/in/container                                     # persistent. Mount a volume
@@ -16,9 +22,8 @@ docker run -p <computer_port>:<container_port> <image_name>                 # po
 docker run -p 8501:8501 local_llm_streamlit
 docker run -d nginx                                                         # run in the background
 docker run -p 8501:8501 -p 11434:11434 --volume /host/models:/root/.ollama  local_llm
+docker run -p 8501:8501  --volume ~/.ollama:/root/.ollama  local_llm        # When you run 'ollama serve' on the command line, you are running as your user. Then your models will be in ~/.ollama. 
 
-# DOCKER_BUILDKIT=1 reduced build time. It is the default builder for Docker Engine as of version 23.0
-time DOCKER_BUILDKIT=1 docker build -t <image_tag> <path to Dockerfile>      # create image from the Dockerfile. e.g. docker build -t local_llm:latest .
 
 docker compose up -d
 docker compose down -d
@@ -27,17 +32,25 @@ ollama pull deepseek-r1:1.5b
 
 docker scout quickview              # tool that looks for vulnerability in a docker image 
 
-sudo service docker restart         # restart docker
 
 sudo fuser -k <port_number>/tcp
 
+#####################################################################################
+# DOCKER MGMT
+#####################################################################################
+sudo service docker restart                                 # restart docker
 sudo systemctl restart docker                               # restart docker daemon
 sudo systemctl stop docker docker.socket containerd         # STOP docker engine
 sudo systemctl disable docker docker.socket containerd      # DISABLE docker engine
 
+#####################################################################################
+# PRUNE CONTAINER, IMAGE.
+#####################################################################################
+
 docker container prune                                      # removes all stopped containers
 docker image prune                                          # removes dangling images
 docker image prune -a --filter "until=24h"
+docker rmi <IMAGE_ID>                                       # remove the provided image
 docker system prune -a --volumes                            # WARNING: removes containers, images, volumes
 
 #####################################################################################

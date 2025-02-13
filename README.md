@@ -16,9 +16,11 @@ The "\</think>" tag is not printed on the Streamlit UI.
 The prompt instructions are from <a href="https://github.com/langchain-ai/ollama-deep-researcher/tree/main">Langchain's Ollama Deep Researcher</a>.
 
 # Usage (Docker):
-Pull the image from Docker hub
+Pull the image from Docker hub and run.
 ```
-
+docker pull vpeka/local_llm
+&&
+docker run -p 8501:8501 -p 11434:11434 --volume /host/models:/root/.ollama  vpeka/local_llm 
 ```
 
 
